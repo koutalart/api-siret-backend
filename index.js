@@ -4,10 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`✅ API SIRET listening on port ${PORT}`);
-});
+app.use(express.json());
 
 let cachedToken = null;
 let tokenExpiresAt = null;
@@ -45,12 +42,16 @@ app.get('/siret/:siret', async (req, res) => {
     },
   });
 
-  if (!response.ok) return res.status(response.status).json({ error: 'Entreprise non trouvée' });
+  if (!response.ok) {
+    return res.status(response.status).json({ error: 'Entreprise non trouvée' });
+  }
 
   const json = await response.json();
   res.json(json);
 });
 
+// ✅ CECI EST CRUCIAL POUR RENDER
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`API SIRET live sur port ${PORT}`);
+  console.log(`✅ API SIRET listening on port ${PORT}`);
 });
