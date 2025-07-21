@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Vérification SIRET</title>
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="form-wrapper">
+    <div class="form-step" id="step-siret">
+      <h1>Quel est le numéro SIRET de votre entreprise ?</h1>
+      <input type="text" id="siretInput" placeholder="Ex: 73282932000074" maxlength="14" />
+      <button id="checkBtn">Vérifier</button>
+      <p class="error" id="errorMsg"></p>
+    </div>
+
+    <div class="form-step" id="step-confirm" style="display:none;">
+      <h2>Voici les informations trouvées :</h2>
+      <div id="entrepriseDetails" class="info-box"></div>
+      <p>Ces informations sont-elles correctes ?</p>
+      <div class="btn-group">
+        <button id="confirmBtn" class="confirm">Oui, continuer</button>
+        <button id="editBtn" class="edit">Non, modifier</button>
+      </div>
+    </div>
+
+    <div class="form-step" id="step-next" style="display:none;">
+      <h2>Merci ! 🙌</h2>
+      <p>Nous allons poursuivre avec ces informations.</p>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

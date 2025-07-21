@@ -1,0 +1,79 @@
+body {
+  margin: 0;
+  font-family: 'Titillium Web', sans-serif;
+  background: #fff;
+  color: #333;
+}
+
+.form-wrapper {
+  max-width: 500px;
+  margin: 10vh auto;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  background: #fff;
+}
+
+h1, h2 {
+  color: #e51968;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+button {
+  background-color: #72c91f;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  margin-top: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+button:hover {
+  background-color: #5aab12;
+}
+
+.btn-group {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.confirm {
+  background-color: #0865cb;
+}
+
+.confirm:hover {
+  background-color: #064ea0;
+}
+
+.edit {
+  background-color: #e51968;
+}
+
+.edit:hover {
+  background-color: #c01557;
+}
+
+.error {
+  color: #e51968;
+  margin-top: 10px;
+}
+
+.info-box {
+  background: #f4f4f4;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+}

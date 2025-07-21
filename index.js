@@ -1,57 +1,36 @@
-import express from 'express';
-import fetch from 'node-fetch';
-import dotenv from 'dotenv';
-dotenv.config();
+const express = require('express');
+const fetch = require('node-fetch');
+const cors = require('cors');
 
 const app = express();
-app.use(express.json());
+const PORT = process.env.PORT || 3000;
 
-let cachedToken = null;
-let tokenExpiresAt = null;
-
-async function getToken() {
-  const creds = Buffer.from(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`).toString('base64');
-  const now = Date.now();
-
-  if (cachedToken && tokenExpiresAt && now < tokenExpiresAt) {
-    return cachedToken;
-  }
-
-  const res = await fetch('https://api.insee.fr/token', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Basic ${creds}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: 'grant_type=client_credentials',
-  });
-
-  const data = await res.json();
-  cachedToken = data.access_token;
-  tokenExpiresAt = now + data.expires_in * 1000;
-  return cachedToken;
-}
+app.use(cors());
 
 app.get('/siret/:siret', async (req, res) => {
-  const token = await getToken();
   const siret = req.params.siret;
+  const url = `https://entreprise.data.gouv.fr/api/sirene/v3/etablissements/${siret}`;
 
-  const response = await fetch(`https://api.insee.fr/entreprises/sirene/V3/siret/${siret}`, {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    },
-  });
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
 
-  if (!response.ok) {
-    return res.status(response.status).json({ error: 'Entreprise non trouvée' });
+    if (!data || !data.etablissement) {
+      return res.status(404).json({ error: "Entreprise non trouvée" });
+    }
+
+    const { denomination, nom_raison_sociale, adresse } = data.etablissement;
+    res.json({
+      nom: denomination || nom_raison_sociale || "Nom indisponible",
+      adresse: adresse || "Adresse indisponible",
+    });
+
+  } catch (error) {
+    console.error("Erreur côté backend :", error);
+    res.status(500).json({ error: "Erreur serveur. Réessaie plus tard." });
   }
-
-  const json = await response.json();
-  res.json(json);
 });
 
-// ✅ CECI EST CRUCIAL POUR RENDER
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`✅ API SIRET listening on port ${PORT}`);
 });
